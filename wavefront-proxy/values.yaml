@@ -1,0 +1,40 @@
+# Default values for wavefront-proxy.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+wavefrontUrl: https://try.wavefront.com/api/
+wavefrontToken: b3221983-af3c-464e-8bc4-4563b29533e3
+
+app: wavefront-proxy
+name: wavefront-proxy
+
+replicaCount: 1
+
+image:
+  repository: wavefronthq/proxy
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  name: wavefront-proxy
+  tier: backend
+  type: ClusterIP
+  protocol: TCP
+  externalPort: 2878
+  internalPort: 2878
+  externalPort: 4242
+  internalPort: 2878
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+ 
