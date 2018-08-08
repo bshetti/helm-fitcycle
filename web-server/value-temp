@@ -1,0 +1,45 @@
+# Default values for api-server.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 3
+
+pullPolicy: IfNotPresent
+
+name: api-server
+app: fitcycle
+tier: api
+
+service:
+  type: NodePort
+
+apiserver:
+  image:
+    repository: gcr.io/learning-containers-187204/api-server-ml
+    tag: latest
+  service:
+    name: fitcycle-api
+    type: NodePort
+    protocol: TCP
+    ports:
+      externalPort: 5000
+      internalPort: 5000
+      nodePort: 30431
+
+telegraf:
+  image:
+    repository: gcr.io/learning-containers-187204/telegraf-statsd-sc
+    tag: latest
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local     

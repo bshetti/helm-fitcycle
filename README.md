@@ -52,5 +52,10 @@ helm install --name helm-mysql -f ./mysql/values.yaml ./mysql
 helm install --name helm-api -f ./api-server/values.yaml ./api-server
 ```
 
+## Bring up the web service
+
+```yaml
+helm install --name helm-web -f ./web-server/values.yaml ./web-server
+```
 
 

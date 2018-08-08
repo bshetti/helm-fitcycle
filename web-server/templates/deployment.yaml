@@ -1,0 +1,85 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    app: {{ .Values.app }}
+    tier: {{ .Values.tier }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app }}
+      tier: {{ .Values.tier }}
+      release: {{ .Release.Name }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app }}
+        tier: {{ .Values.tier }}
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+      - name: varlog
+        emptyDir: {}
+      containers:
+      - image: "{{ .Values.webserver.image.repository }}:{{ .Values.webserver.image.tag }}"
+        name: {{ .Values.name }}
+        env:
+        - name: MYSQL_ID
+          value: "root"
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        - name: MYSQL_SERVER
+          value: fitcycle-mysql
+        ports:
+        - containerPort: 8000
+          name: web-server
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+
+      - image: "{{ .Values.telegraf.image.repository }}:{{ .Values.telegraf.image.tag }}"
+        name: telegraf
+        ports:
+        - name: 8125-server
+          containerPort: 8125
+          protocol: UDP
+        - name: 8092-server
+          containerPort: 8092
+        - name: 8094-server
+          containerPort: 8094
+        env:
+        - name: WAVEFRONT_PROXY
+          value: wavefront-proxy
+        - name: INTERVAL
+          value: 60s
+        - name: NODE_HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        resources:
+          requests:
+            memory: 30Mi
+            cpu: 100m
+          limits:
+            memory: 50Mi
+            cpu: 200m

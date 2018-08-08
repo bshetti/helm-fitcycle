@@ -9,7 +9,7 @@ spec:
       http:
         paths:
         - backend:
-            serviceName: web-server
+            serviceName: fitcycle-web
             servicePort: 8000
           path: /
         - backend:
