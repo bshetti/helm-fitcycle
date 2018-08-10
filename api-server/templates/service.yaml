@@ -10,7 +10,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   ports:
-    - name: http-fc
+    - name: http-fcapi
       protocol: TCP
       port: 5000
       nodePort: 30431

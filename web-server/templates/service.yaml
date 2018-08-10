@@ -12,7 +12,7 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: 8000
-      name: http-fc-web
+      name: http-fcweb
       nodePort: 30440
       protocol: TCP
   selector:

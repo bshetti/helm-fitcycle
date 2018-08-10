@@ -11,7 +11,7 @@ metadata:
 spec:
   ports:
     - port: 3306
-      name: http-fc-db
+      name: tcp-fcdb
   selector:
     app: {{ .Values.app }}
     tier: {{ .Values.tier }}

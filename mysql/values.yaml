@@ -21,10 +21,6 @@ mysql:
     name: fitcycle-mysql
     type: ClusterIP
     protocol: TCP
-    ports:
-      externalPort: 5000
-      internalPort: 5000
-      nodePort: 30431
 
 telegraf:
   image:
