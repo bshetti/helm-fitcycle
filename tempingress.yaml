@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+spec:
+  rules:
+    - host: prod1-308b2866-a33c-11e8-84b1-06eff62c389e.bfd7a751-b2f5-43a3-b2b3-0c82d6896aee.vke-user.com
+      http:
+        paths:
+        - backend:
+            serviceName: fitcycle-web
+            servicePort: 8000
+          path: /
+        - backend:
+            serviceName: fitcycle-api
+            servicePort: 5000
+          path: /api/v1.0/signups
+

@@ -15,7 +15,7 @@ service:
 
 apiserver:
   image:
-    repository: gcr.io/learning-containers-187204/api-server-ml
+    repository: gcr.io/learning-containers-187204/api-server0901
     tag: latest
   service:
     name: fitcycle-api
